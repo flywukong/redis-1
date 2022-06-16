@@ -546,9 +546,11 @@ func (c *clusterState) slotSlaveNode(slot int) (*clusterNode, error) {
 	case 0:
 		return c.nodes.Random()
 	case 1:
+		fmt.Println("choose nodes[0]", nodes[0].String())
 		return nodes[0], nil
 	case 2:
 		if slave := nodes[1]; !slave.Failing() {
+			fmt.Println("choose slave:", slave.String())
 			return slave, nil
 		}
 		return nodes[0], nil
@@ -558,6 +560,7 @@ func (c *clusterState) slotSlaveNode(slot int) (*clusterNode, error) {
 			n := rand.Intn(len(nodes)-1) + 1
 			slave = nodes[n]
 			if !slave.Failing() {
+				fmt.Println("choose slave:", slave.String())
 				return slave, nil
 			}
 		}
@@ -1656,6 +1659,7 @@ func (c *ClusterClient) cmdNode(
 	}
 
 	if c.opt.ReadOnly && cmdInfo != nil && cmdInfo.ReadOnly {
+		fmt.Println("read only: find a slave")
 		return c.slotReadOnlyNode(state, slot)
 	}
 	return state.slotMasterNode(slot)
@@ -1663,9 +1667,11 @@ func (c *ClusterClient) cmdNode(
 
 func (c *clusterClient) slotReadOnlyNode(state *clusterState, slot int) (*clusterNode, error) {
 	if c.opt.RouteByLatency {
+		fmt.Println("call state.slotClosestNode on slot:", slot)
 		return state.slotClosestNode(slot)
 	}
 	if c.opt.RouteRandomly {
+		fmt.Println("call state.slotRandomNode on slot:", slot)
 		return state.slotRandomNode(slot)
 	}
 	return state.slotSlaveNode(slot)
