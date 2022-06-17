@@ -88,6 +88,7 @@ func (opt *ClusterOptions) init() {
 	} else if opt.MaxRedirects == 0 {
 		opt.MaxRedirects = 3
 	}
+	fmt.Println("redis read only")
 
 	opt.ReadOnly = true
 
