@@ -89,6 +89,8 @@ func (opt *ClusterOptions) init() {
 		opt.MaxRedirects = 3
 	}
 
+	opt.ReadOnly = true
+
 	if opt.RouteByLatency || opt.RouteRandomly {
 		opt.ReadOnly = true
 	}
@@ -134,6 +136,7 @@ func (opt *ClusterOptions) init() {
 func (opt *ClusterOptions) clientOptions() *Options {
 	const disableIdleCheck = -1
 
+	fmt.Println("redis read only,", opt.ReadOnly && opt.ClusterSlots == nil)
 	return &Options{
 		Dialer:    opt.Dialer,
 		OnConnect: opt.OnConnect,
