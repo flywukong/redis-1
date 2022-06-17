@@ -245,9 +245,9 @@ func (c *baseClient) initConn(ctx context.Context, cn *pool.Conn) error {
 			pipe.Select(ctx, c.opt.DB)
 		}
 
-		if c.opt.readOnly {
-			pipe.ReadOnly(ctx)
-		}
+		//if c.opt.readOnly {
+		//		pipe.ReadOnly(ctx)
+		//}
 
 		return nil
 	})
